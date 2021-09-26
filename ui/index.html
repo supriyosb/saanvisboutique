@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        Customer Information
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        Name:
+                    </td>
+                    <td>
+                        <input type="text" name="customer_name" id="customer_name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Phone Number:
+                    </td>
+                    <td>
+                        <input type="text" name="customer_phone_no" id="customer_phone_no">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <input type="button" name="add" id="add" value="Add Customer">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="footer">
+
+    </div>
+
+    <script>
+        $("#add").click(function(){
+            //Getting input field data
+            var customerName = $("#customer_name").val();
+            var customerPhoneNo = $("#customer_phone_no").val();
+            
+            let url = 'http://127.0.0.1:8000/api/customer/create';
+            let customer = {"name":"qwert", "phone_no":"1234567890"}
+
+            /*fetch(url, {
+                method : "POST",
+                body: JSON.stringify(customer),
+                dataType: "jsonp"
+            })*/
+
+            //Making ajax call
+            /*$.post("http://127.0.0.1:8000/api/customer/create", {
+                name: customerName,
+                phone_no: customerPhoneNo
+            }, function(response){
+                $("footer").html(response.message)
+            })*/
+            /*$.ajax({
+                url: url,
+                method: 'post',
+                dataType: "jsonp",
+                crossDomain: true,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(customer),
+                cache: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic YWRtaW46YWRtaW4=");
+                    xhr.setRequestHeader("X-Mobile", "false");
+                },
+            })*/
+            /*$.post(url, JSON.stringify(customer), function(response){ 
+                alert("success");
+                $("#footer").html(response.amount);
+            });*/
+            /*var xhr = new XMLHttpRequest();
+            xhr.open("POST", url);
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Authorization", "Basic YWRtaW46YWRtaW4=");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                   console.log(xhr.status);
+                   console.log(xhr.responseText);
+                }};
+            var data = '{ "name":"Emma", "phone_no":"28" }';
+            xhr.send(data);*/
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "name": customerName,
+                    "phone_no": customerPhoneNo
+                },
+                url: url,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic YWRtaW46YWRtaW4=");
+                },
+                error: function(xhr, status, error){
+                    var err_msg = '';
+                    for(var prop in xhr.responseJSON){
+                        err_msg = err_msg + prop + ": " + xhr.responseJSON[prop] + '\n';
+                    }
+                    alert(err_msg);
+                },
+                success: function(){
+                    alert('Data saved');
+                }
+            });
+        })
+    </script>
+</body>
+</html>
