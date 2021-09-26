@@ -28,9 +28,14 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    
+
     path('api/customer/', views.CustomerAPI.as_view()),
     path('api/customer/create', views.CustomerAPI.as_view()),
     path('api/customer/delete/<int:pk>', views.CustomerAPI.as_view()),
     path('api/customer/update/<int:pk>', views.CustomerAPI.as_view()),
+
+    path('api/vendor/', views.VendorAPI.as_view()),
+    path('api/vendor/create', views.VendorAPI.as_view()),
+    path('api/vendor/delete/<int:pk>', views.VendorAPI.as_view()),
+    path('api/vendor/update/<int:pk>', views.VendorAPI.as_view()),
 ]
