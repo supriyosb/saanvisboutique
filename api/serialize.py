@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Customer, Vendor
+from .models import Customer, CustomerTransaction, Vendor
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,3 +11,9 @@ class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
         fields = ['id', 'name', 'phone_no']
+
+
+class CustomerTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerTransaction
+        fields = ['id', 'cust_id', 'desc', 'total_amount', 'paid_amount', 'due_amount', 'date']
