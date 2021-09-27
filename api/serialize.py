@@ -16,4 +16,4 @@ class VendorSerializer(serializers.ModelSerializer):
 class CustomerTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerTransaction
-        fields = ['id', 'cust_id', 'desc', 'total_amount', 'paid_amount', 'due_amount', 'date']
+        fields = ['id', 'customer', 'desc', 'total_amount', 'paid_amount', 'due_amount', 'date']
