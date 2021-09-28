@@ -39,7 +39,7 @@ urlpatterns = [
     path('api/vendor/delete/<int:pk>', views.VendorAPI.as_view()),
     path('api/vendor/update/<int:pk>', views.VendorAPI.as_view()),
 
-    path('api/customer/transaction', views.CustomerTransactionAPI.as_view()),
+    path('api/customer/transaction/<int:pk>', views.CustomerTransactionAPI.as_view()),
     path('api/customer/transaction/create', views.CustomerTransactionAPI.as_view()),
     path('api/customer/transaction/delete/<int:pk>', views.CustomerTransactionAPI.as_view()),
     path('api/customer/transaction/update/<int:pk>', views.CustomerTransactionAPI.as_view()),
