@@ -97,10 +97,18 @@ class CustomerTransactionAPI(APIView):
 
     #permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
-        data = CustomerTransaction.objects.all()
-        serializer= CustomerTransactionSerializer(data, many=True)
-        return Response(serializer.data)
+    def get(self, request, format=None, pk=None):
+        try:
+            if pk is not None:
+                data = CustomerTransaction.objects.filter(customer=pk).select_related('customer')
+                # data = CustomerTransaction.objects.filter(customer=pk)
+                print(data)
+                serializer = CustomerTransactionSerializer(data, many=True)
+                return Response(serializer.data)
+            else:
+                return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception:
+            return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, format=None):
         serializer = CustomerTransactionSerializer(data=request.data)
