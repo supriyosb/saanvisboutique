@@ -30,6 +30,7 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
     path('api/customer/', views.CustomerAPI.as_view()),
+    path('api/customer/<int:pk>', views.CustomerAPI.as_view()),
     path('api/customer/create', views.CustomerAPI.as_view()),
     path('api/customer/delete/<int:pk>', views.CustomerAPI.as_view()),
     path('api/customer/update/<int:pk>', views.CustomerAPI.as_view()),

@@ -10,7 +10,7 @@ class Vendor(models.Model):
     phone_no = models.CharField(max_length=15)
 
 class CustomerTransaction(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
+    customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING, related_name='transaction')
     desc = models.TextField()
     total_amount = models.DecimalField(max_digits=20, decimal_places=2)
     paid_amount = models.DecimalField(max_digits=20, decimal_places=2)
