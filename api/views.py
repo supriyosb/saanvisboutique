@@ -10,9 +10,14 @@ class CustomerAPI(APIView):
 
     permission_classes = [IsAuthenticated]
     
-    def get(self, request, format=None):
-        data = Customer.objects.all()
-        serializer= CustomerSerializer(data, many=True)
+    def get(self, request, format=None, pk=None):
+        serializer = None
+        if pk is not None:
+            data = Customer.objects.get(id=pk)
+            serializer= CustomerSerializer(data, many=False)
+        else:
+            data = Customer.objects.all()
+            serializer= CustomerSerializer(data, many=True)  
         return Response(serializer.data)
 
     def post(self, request, format=None):
