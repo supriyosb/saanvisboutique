@@ -1,5 +1,5 @@
 from api.serialize import CustomerSerializer, CustomerTransactionSerializer, VendorSerializer
-from .models import Customer, CustomerTransaction, Vendor
+from .models import Customer, CustomerTransaction, Vendor, CustomerProduct
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -115,14 +115,29 @@ class CustomerTransactionAPI(APIView):
         except Exception:
             return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
     def post(self, request, format=None):
         serializer = CustomerTransactionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             last_data = CustomerTransaction.objects.last()
+
+            transaction_id = last_data
+            product_name_arr = request.POST.getlist("product_name[]")
+            product_quantity_arr = request.POST.getlist("product_quantity[]")
+            product_price_arr = request.POST.getlist("product_price[]")
+
+            for i in range(len(product_name_arr)):
+                product_name = product_name_arr[i]
+                product_quantity = product_quantity_arr[i]
+                product_price = product_price_arr[i]
+                product = CustomerProduct(transaction=transaction_id, prod_name=product_name, prod_quantity=product_quantity, total_price=product_price)
+                product.save()
+            
             last_data_serializer = CustomerTransactionSerializer(last_data)
             return Response({'msg': 'Data Created', 'success': True, 'data': last_data_serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     def put(self, request, format=None, pk=None):
         try:
@@ -135,6 +150,7 @@ class CustomerTransactionAPI(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def delete(self, request, format=None, pk=None):
         try:
