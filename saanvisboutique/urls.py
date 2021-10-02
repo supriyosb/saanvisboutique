@@ -44,6 +44,4 @@ urlpatterns = [
     path('api/customer/transaction/create', views.CustomerTransactionAPI.as_view()),
     path('api/customer/transaction/delete/<int:pk>', views.CustomerTransactionAPI.as_view()),
     path('api/customer/transaction/update/<int:pk>', views.CustomerTransactionAPI.as_view()),
-
-    path('api/customer/transaction/<int:pk>/product', views.CustomerProductAPI.as_view()),
 ]
