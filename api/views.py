@@ -1,4 +1,4 @@
-from api.serialize import CustomerSerializer, CustomerTransactionSerializer, VendorSerializer
+from api.serialize import CustomerProductSerializer, CustomerSerializer, CustomerTransactionSerializer, VendorSerializer
 from .models import Customer, CustomerTransaction, Vendor, CustomerProduct
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
@@ -159,5 +159,23 @@ class CustomerTransactionAPI(APIView):
                 serializer= CustomerTransactionSerializer(customer_transaction_data)
                 customer_transaction_data.delete()
                 return Response({'msg': 'Data Deleted', 'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+        except Exception:
+            return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class CustomerProductAPI(APIView):
+
+    #permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None, pk=None):
+        try:
+            if pk is not None:
+                data = CustomerProduct.objects.filter(transaction=pk)
+                print(data)
+                serializer = CustomerProductSerializer(data, many=True)
+                return Response(serializer.data)
+            else:
+                return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception:
             return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
