@@ -105,10 +105,10 @@ class CustomerTransactionAPI(APIView):
     def get(self, request, format=None, pk=None):
         try:
             if pk is not None:
-                data = CustomerTransaction.objects.filter(id=pk)
+                data = CustomerTransaction.objects.get(id=pk)
                 # data = CustomerTransaction.objects.filter(customer=pk)
                 print(data)
-                serializer = CustomerTransactionSerializer(data, many=True)
+                serializer = CustomerTransactionSerializer(data)
                 return Response(serializer.data)
             else:
                 return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
