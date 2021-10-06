@@ -18,7 +18,7 @@ class CustomerTransactionSerializer(serializers.ModelSerializer):
     product = CustomerProductSerializer(many=True, read_only=True)
     class Meta:
         model = CustomerTransaction
-        fields = ['id', 'customer', 'desc', 'total_amount', 'paid_amount', 'due_amount', 'date', 'product']
+        fields = ['id', 'customer', 'desc', 'paid_amount', 'due_amount', 'date', 'product']
 
 
 class CustomerSerializer(serializers.ModelSerializer):

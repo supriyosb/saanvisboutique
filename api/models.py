@@ -12,7 +12,7 @@ class Vendor(models.Model):
 class CustomerTransaction(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING, related_name='transaction')
     desc = models.TextField()
-    total_amount = models.DecimalField(max_digits=20, decimal_places=2)
+    #total_amount = models.DecimalField(max_digits=20, decimal_places=2)
     paid_amount = models.DecimalField(max_digits=20, decimal_places=2)
     due_amount = models.DecimalField(max_digits=20, decimal_places=2)
     date = models.DateField(auto_now=False, auto_now_add=False)

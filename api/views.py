@@ -161,3 +161,32 @@ class CustomerTransactionAPI(APIView):
                 return Response({'msg': 'Data Deleted', 'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception:
             return Response({'msg': 'Customer transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class ProductAPI(APIView):
+
+    #permission_classes = [IsAuthenticated]
+
+    def put(self, request, format=None, pk=None):
+        try:
+            if pk is not None:
+                product = CustomerProduct.objects.get(id=pk)
+                serializer = CustomerProductSerializer(product, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({'msg': 'Data Updated', 'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response({'msg': 'Product id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    def delete(self, request, format=None, pk=None):
+        try:
+            if pk is not None:
+                product = CustomerProduct.objects.get(id=pk)
+                serializer= CustomerProductSerializer(product)
+                product.delete()
+                return Response({'msg': 'Data Deleted', 'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+        except Exception:
+            return Response({'msg': 'Product id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
