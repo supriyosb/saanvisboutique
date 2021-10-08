@@ -1,5 +1,5 @@
 from api.serialize import CustomerProductSerializer, CustomerSerializer, CustomerTransactionSerializer, VendorSerializer
-from .models import Customer, CustomerTransaction, Vendor, CustomerProduct
+from .models import Customer, CustomerPayment, CustomerTransaction, Vendor, CustomerProduct
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -122,6 +122,15 @@ class CustomerTransactionAPI(APIView):
             serializer.save()
             last_data = CustomerTransaction.objects.last()
 
+            # Add payment data
+            transaction_id = last_data
+            payment_amount = request.POST.get("paid_amount")
+            payment_date = request.POST.get("date")
+            payment_mode = request.POST.get("payment_mode")
+            payment = CustomerPayment(transaction=transaction_id, payment_amount=payment_amount, payment_date=payment_date, payment_mode=payment_mode)
+            payment.save()
+
+            # Add product data
             transaction_id = last_data
             product_name_arr = request.POST.getlist("product_name[]")
             product_quantity_arr = request.POST.getlist("product_quantity[]")
