@@ -1,4 +1,4 @@
-from api.serialize import CustomerProductSerializer, CustomerSerializer, CustomerTransactionSerializer, VendorSerializer
+from api.serialize import CustomerPaymentSerializer, CustomerProductSerializer, CustomerSerializer, CustomerTransactionSerializer, VendorSerializer
 from .models import Customer, CustomerPayment, CustomerTransaction, Vendor, CustomerProduct
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
@@ -199,3 +199,34 @@ class ProductAPI(APIView):
                 return Response({'msg': 'Data Deleted', 'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception:
             return Response({'msg': 'Product id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class PaymentAPI(APIView):
+
+    #permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None, pk=None):
+        if pk is not None:
+                transaction_id = CustomerTransaction.objects.get(id=pk)
+                payment_amount = request.POST.get("payment_amount")
+                payment_date = request.POST.get("payment_date")
+                payment_mode = request.POST.get("payment_mode")
+                payment = CustomerPayment(transaction=transaction_id, payment_amount=payment_amount, payment_date=payment_date, payment_mode=payment_mode)
+                payment.save()
+                last_data = CustomerPayment.objects.last()
+                last_data_serializer = CustomerPaymentSerializer(last_data)
+                return Response({'msg': 'Data Created', 'success': True, 'data': last_data_serializer.data}, status=status.HTTP_201_CREATED)
+        # try:
+        #     if pk is not None:
+        #         transaction_id = CustomerTransaction.objects.get(id=pk)
+        #         payment_amount = request.POST.get("paid_amount")
+        #         payment_date = request.POST.get("date")
+        #         payment_mode = request.POST.get("payment_mode")
+        #         payment = CustomerPayment(transaction=transaction_id, payment_amount=payment_amount, payment_date=payment_date, payment_mode=payment_mode)
+        #         payment.save()
+        #         last_data = CustomerPayment.objects.last()
+        #         last_data_serializer = CustomerPaymentSerializer(last_data)
+        #         return Response({'msg': 'Data Created', 'success': True, 'data': last_data_serializer.data}, status=status.HTTP_201_CREATED)
+        # except Exception:
+        #     return Response({'msg': 'transaction id not found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

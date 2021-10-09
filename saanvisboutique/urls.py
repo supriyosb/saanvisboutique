@@ -47,4 +47,6 @@ urlpatterns = [
 
     path('api/product/update/<int:pk>', views.ProductAPI.as_view()),
     path('api/product/delete/<int:pk>', views.ProductAPI.as_view()),
+
+    path('api/customer/transaction/<int:pk>/payment/create', views.PaymentAPI.as_view()),
 ]
